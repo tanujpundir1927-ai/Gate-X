@@ -18,7 +18,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [registeredUser, setRegisteredUser] = useState<any>(null);
-  
+
   const ticketRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +55,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch("https://gate-x-p00t.onrender.com/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-black text-white flex flex-col relative overflow-x-hidden">
       {/* Background Glows */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.06),transparent_70%)] pointer-events-none" />
-      
+
       {/* Navigation Header */}
       <header className="border-b border-gray-900 bg-black/60 backdrop-blur-md px-6 py-4 flex items-center justify-between z-10">
         <Link href="/">
