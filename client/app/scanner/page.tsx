@@ -23,7 +23,7 @@ export default function ScannerPage() {
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
       const ctx = audioContextRef.current;
-      
+
       // Resume audio context if suspended (browser security)
       if (ctx.state === "suspended") {
         ctx.resume();
@@ -62,7 +62,7 @@ export default function ScannerPage() {
 
     try {
       const { Html5Qrcode } = await import("html5-qrcode");
-      
+
       // Ensure element exists before running
       const readerElement = document.getElementById("scanner-reader");
       if (!readerElement) return;
@@ -121,12 +121,12 @@ export default function ScannerPage() {
   // Validate scanned data against backend
   const handleValidateQR = async (dataPayload: string) => {
     if (!dataPayload.trim()) return;
-    
+
     setValidating(true);
     setScanResult(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/scanner/validate", {
+      const response = await fetch("https://gate-x-p00t.onrender.com/api/scanner/validate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -205,30 +205,28 @@ export default function ScannerPage() {
 
       {/* Main Console Layout */}
       <div className="flex-grow max-w-5xl mx-auto w-full p-6 grid md:grid-cols-12 gap-8 items-start z-10">
-        
+
         {/* Left Column: Scanning Interface */}
         <div className="md:col-span-7 space-y-6">
           <div className="bg-[#07152d]/40 backdrop-blur-md rounded-3xl border border-cyan-500/10 p-6 flex flex-col gap-6">
-            
+
             {/* Mode Switch Tabs */}
             <div className="grid grid-cols-2 p-1 bg-black rounded-xl border border-gray-900">
               <button
                 onClick={() => setActiveTab("camera")}
-                className={`py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                  activeTab === "camera"
-                    ? "bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.25)]"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={`py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${activeTab === "camera"
+                  ? "bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.25)]"
+                  : "text-gray-400 hover:text-white"
+                  }`}
               >
                 <Camera className="w-4 h-4" /> Camera Scan
               </button>
               <button
                 onClick={() => setActiveTab("manual")}
-                className={`py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                  activeTab === "manual"
-                    ? "bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.25)]"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                className={`py-3.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${activeTab === "manual"
+                  ? "bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.25)]"
+                  : "text-gray-400 hover:text-white"
+                  }`}
               >
                 <Keyboard className="w-4 h-4" /> Manual Data Input
               </button>
@@ -238,7 +236,7 @@ export default function ScannerPage() {
             {activeTab === "camera" ? (
               <div className="relative">
                 <div className="aspect-square w-full max-w-[380px] mx-auto bg-black border border-cyan-500/20 rounded-2xl overflow-hidden relative flex items-center justify-center">
-                  
+
                   {/* Camera Element */}
                   <div id="scanner-reader" className="w-full h-full" />
 
@@ -307,11 +305,11 @@ export default function ScannerPage() {
 
         {/* Right Column: Scan Result Card & Recent Log */}
         <div className="md:col-span-5 space-y-6">
-          
+
           {/* Main Verification Status Card */}
           <div className="bg-[#07152d]/40 backdrop-blur-md rounded-3xl border border-cyan-500/10 p-6">
             <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6">Scan Result Card</h2>
-            
+
             {!scanResult && !validating && (
               <div className="border border-dashed border-gray-800 rounded-2xl p-12 text-center text-gray-500 flex flex-col items-center gap-2.5">
                 <QrCode className="w-10 h-10 text-gray-700 stroke-[1.5]" />
@@ -327,13 +325,12 @@ export default function ScannerPage() {
             )}
 
             {!validating && scanResult && (
-              <div className={`rounded-2xl p-6 border transition-all ${
-                scanResult.status === "valid"
-                  ? "bg-emerald-950/20 border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.1)]"
-                  : scanResult.status === "used"
-                    ? "bg-red-950/20 border-red-500/40 shadow-[0_0_25px_rgba(239,68,68,0.1)]"
-                    : "bg-amber-950/20 border-amber-500/40 shadow-[0_0_25px_rgba(245,158,11,0.1)]"
-              }`}>
+              <div className={`rounded-2xl p-6 border transition-all ${scanResult.status === "valid"
+                ? "bg-emerald-950/20 border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.1)]"
+                : scanResult.status === "used"
+                  ? "bg-red-950/20 border-red-500/40 shadow-[0_0_25px_rgba(239,68,68,0.1)]"
+                  : "bg-amber-950/20 border-amber-500/40 shadow-[0_0_25px_rgba(245,158,11,0.1)]"
+                }`}>
                 {/* Result header banner */}
                 <div className="flex items-center gap-3 mb-6">
                   {scanResult.status === "valid" ? (
@@ -343,15 +340,14 @@ export default function ScannerPage() {
                   ) : (
                     <AlertTriangle className="w-8 h-8 text-amber-500 flex-shrink-0 stroke-[2.5]" />
                   )}
-                  
+
                   <div>
-                    <h3 className={`text-xl font-black uppercase tracking-wider ${
-                      scanResult.status === "valid"
-                        ? "text-emerald-400"
-                        : scanResult.status === "used"
-                          ? "text-red-500"
-                          : "text-amber-500"
-                    }`}>
+                    <h3 className={`text-xl font-black uppercase tracking-wider ${scanResult.status === "valid"
+                      ? "text-emerald-400"
+                      : scanResult.status === "used"
+                        ? "text-red-500"
+                        : "text-amber-500"
+                      }`}>
                       {scanResult.message}
                     </h3>
                     <span className="text-[10px] text-gray-500 font-mono">STATUS RESOLUTION COMPLETE</span>
@@ -430,13 +426,12 @@ export default function ScannerPage() {
                       <p className="text-[10px] font-mono text-cyan-400">{log.serialNumber}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                        log.status === "valid"
-                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          : log.status === "used"
-                            ? "bg-red-500/10 text-red-500 border border-red-500/20"
-                            : "bg-amber-500/10 text-amber-500 border border-amber-500/20"
-                      }`}>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${log.status === "valid"
+                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                        : log.status === "used"
+                          ? "bg-red-500/10 text-red-500 border border-red-500/20"
+                          : "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                        }`}>
                         {log.status === "valid" ? "VALID" : log.status === "used" ? "USED" : "INVALID"}
                       </span>
                       <p className="text-[9px] text-gray-500 mt-1 font-mono">{log.time}</p>

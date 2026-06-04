@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { 
-  Users, CheckCircle, XCircle, Search, Filter, RefreshCw, 
-  LogOut, ArrowLeft, ShieldCheck, BarChart4, TrendingUp, Calendar 
+import {
+  Users, CheckCircle, XCircle, Search, Filter, RefreshCw,
+  LogOut, ArrowLeft, ShieldCheck, BarChart4, TrendingUp, Calendar
 } from "lucide-react";
 
 export default function AdminPage() {
@@ -40,7 +40,7 @@ export default function AdminPage() {
     setLoading(true);
     try {
       // 1. Fetch Stats
-      const statsRes = await fetch("http://localhost:5000/api/admin/stats", {
+      const statsRes = await fetch("https://gate-x-p00t.onrender.com/api/admin/stats", {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (statsRes.status === 401) {
@@ -62,7 +62,7 @@ export default function AdminPage() {
 
   const fetchUsers = async (token: string, searchQuery: string, statusQuery: string) => {
     try {
-      const url = new URL("http://localhost:5000/api/admin/users");
+      const url = new URL("https://gate-x-p00t.onrender.com/api/admin/users");
       if (searchQuery) url.searchParams.append("search", searchQuery);
       if (statusQuery !== "all") url.searchParams.append("status", statusQuery);
 
@@ -101,7 +101,7 @@ export default function AdminPage() {
 
     setResettingId(userId);
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/users/${userId}/reset`, {
+      const response = await fetch(`https://gate-x-p00t.onrender.com/api/admin/users/${userId}/reset`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -136,8 +136,8 @@ export default function AdminPage() {
   }
 
   // Calculate scan percentage
-  const scanRate = stats.totalUsers > 0 
-    ? Math.round((stats.usedEntries / stats.totalUsers) * 100) 
+  const scanRate = stats.totalUsers > 0
+    ? Math.round((stats.usedEntries / stats.totalUsers) * 100)
     : 0;
 
   // Donut chart math
@@ -146,8 +146,8 @@ export default function AdminPage() {
   const strokeDashoffset = circumference - (scanRate / 100) * circumference;
 
   // Bar chart math (Past 7 days)
-  const maxRegCount = stats.timeline && stats.timeline.length > 0 
-    ? Math.max(...stats.timeline.map((t: any) => t.count), 5) 
+  const maxRegCount = stats.timeline && stats.timeline.length > 0
+    ? Math.max(...stats.timeline.map((t: any) => t.count), 5)
     : 5;
 
   return (
@@ -188,10 +188,10 @@ export default function AdminPage() {
 
       {!loading && (
         <main className="flex-grow max-w-6xl w-full mx-auto p-6 space-y-8 z-10">
-          
+
           {/* Dashboard Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            
+
             {/* Total Registrations */}
             <div className="p-5 rounded-2xl glass-card relative overflow-hidden group">
               <div className="absolute right-4 top-4 text-cyan-500/20 group-hover:text-cyan-500/30 transition-colors">
@@ -244,7 +244,7 @@ export default function AdminPage() {
 
           {/* Interactive Analytics charts */}
           <div className="grid md:grid-cols-2 gap-6">
-            
+
             {/* Chart 1: Entry Trends (Donut) */}
             <div className="p-6 rounded-2xl glass-card flex flex-col justify-between">
               <div className="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
@@ -279,7 +279,7 @@ export default function AdminPage() {
                       className="transition-all duration-1000 ease-out filter drop-shadow-[0_0_8px_#10b981]"
                     />
                   </svg>
-                  
+
                   {/* Absolute Centered Text */}
                   <div className="absolute text-center">
                     <p className="text-3xl font-black font-mono text-emerald-400">{scanRate}%</p>
@@ -330,14 +330,14 @@ export default function AdminPage() {
                         <span className="absolute -top-7 scale-0 group-hover:scale-100 bg-cyan-500 text-black text-[9px] font-black py-0.5 px-1.5 rounded transition-all font-mono z-20">
                           {item.count}
                         </span>
-                        
+
                         {/* Bar */}
                         <div
                           className="w-5 sm:w-8 bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t-md hover:from-cyan-400 hover:to-cyan-300 transition-all filter hover:drop-shadow-[0_0_8px_#06b6d4] cursor-pointer"
                           style={{ height: `${Math.max(heightPercent, 2)}%` }}
                         />
                       </div>
-                      
+
                       {/* X Label */}
                       <span className="text-[9px] text-gray-500 font-bold tracking-wider uppercase font-mono mt-1">
                         {item.day}
@@ -352,11 +352,11 @@ export default function AdminPage() {
 
           {/* User Management Database Console */}
           <div className="bg-[#07152d]/40 backdrop-blur-md rounded-3xl border border-cyan-500/10 p-6 space-y-6">
-            
+
             {/* Table Header Filter panel */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <h2 className="text-base font-black text-white flex items-center gap-2">
-                Database Registry 
+                Database Registry
                 <span className="text-xs text-gray-500 font-normal font-mono">({users.length} loaded)</span>
               </h2>
 
@@ -377,25 +377,22 @@ export default function AdminPage() {
                 <div className="flex bg-black p-1 rounded-xl border border-gray-900 w-full sm:w-auto">
                   <button
                     onClick={() => handleFilterChange("all")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex-grow sm:flex-grow-0 ${
-                      filterStatus === "all" ? "bg-cyan-500 text-black" : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex-grow sm:flex-grow-0 ${filterStatus === "all" ? "bg-cyan-500 text-black" : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     All
                   </button>
                   <button
                     onClick={() => handleFilterChange("used")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex-grow sm:flex-grow-0 ${
-                      filterStatus === "used" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex-grow sm:flex-grow-0 ${filterStatus === "used" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     Scanned
                   </button>
                   <button
                     onClick={() => handleFilterChange("unused")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex-grow sm:flex-grow-0 ${
-                      filterStatus === "unused" ? "bg-amber-500/20 text-amber-400 border border-amber-500/20" : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex-grow sm:flex-grow-0 ${filterStatus === "unused" ? "bg-amber-500/20 text-amber-400 border border-amber-500/20" : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     Unused
                   </button>
