@@ -32,7 +32,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/admin-login", {
+      const response = await fetch("https://gate-x-p00t.onrender.com/api/admin-login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
